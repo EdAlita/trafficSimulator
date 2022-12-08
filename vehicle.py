@@ -75,4 +75,3 @@ class Vehicle:
     
     def latinModeOn(self):
         self.rougue=True
-
