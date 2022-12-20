@@ -22,5 +22,29 @@ class Road:
         self.traffic_signal_group = group
         self.has_traffic_signal = True
 
-    
-    
+    def traffic_signal_state(self):
+        if self.has_traffic_signal:
+            i = self.traffic_signal_group
+            return self.traffic_signal.current_cycle[i]
+        return True
+
+    def update(self, dt):
+        n = len(self, dt)
+
+        if n > 0:
+           self.vehicles[0].update(None, dt)
+
+           for i in range(1, n):
+            lead = self.vehicles[i-1]
+            self.vehicles[i].update(lead, dt)
+
+            if self.traffic_signal_state:
+                self.vehicles[0].unstop()
+                for vehicle in self.vehicles:
+                    vehicle.unslow()
+            else:
+                if self.vehicles[0].x >= self.length - self.traffic_signal.slow_distance:
+                    self.vehicles.slow(self.traffic_signal.slow_factor*self.vehicles[0].v_max) 
+                if self.vehicles[0].x >= self.length - self.traffic_signal.stop_distance  and self.vehicles[0].x <= self.length - self.traffic_signal.stop_distance / 2:
+                    self.vehicles[0].stop()
+                    
