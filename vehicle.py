@@ -29,6 +29,7 @@ class Vehicle:
         self.a = 0
         self.stopped = False
         self.latinModeOn = False
+        self.counted = False
 
     def init_properties(self):
         self.sqrt_ab = 2*np.sqrt(self.a_max*self.b_max)

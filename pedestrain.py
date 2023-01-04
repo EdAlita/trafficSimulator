@@ -19,7 +19,7 @@ class Pedestrain:
         self.v_max = 8
         self.a_max = 1
         self.b_max = 4.61
-        self.color = (255, 0, 0)
+        self.color = (255, 43, 65)
 
         self.path = []
         self.current_road_index = 0
@@ -29,6 +29,7 @@ class Pedestrain:
         self.a = 0
         self.stopped = False
         self.latinModeOn = False
+        self.counted = False
 
     def init_properties(self):
         self.sqrt_ab = 2*np.sqrt(self.a_max*self.b_max)
@@ -69,8 +70,16 @@ class Pedestrain:
     def unslow(self):
         self.v_max = self.v_max
 
+    def set_color(self, color):
+        self.color = color
+
+    def get_color(self):
+        return self.color
+
     def latinmode(self):
         self.latinModeOn=True
+        if self.latinModeOn:
+            self.set_color((174, 43, 255))
     
     def normalmode(self):
         self.latinmode=False

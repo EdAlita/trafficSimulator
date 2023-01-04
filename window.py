@@ -328,6 +328,9 @@ class Window:
         for road in self.sim.roads:
             # Draw vehicles
             for vehicle in road.vehicles:
+                if vehicle.latinModeOn and not vehicle.counted:
+                    self.rogue_cars = self.rogue_cars+1
+                    vehicle.counted = True
                 self.draw_vehicle(vehicle, road)
 
     def draw_signals(self):
@@ -361,6 +364,10 @@ class Window:
         for roadp in self.sim.roadsp:
             # Draw pedestrains
             for pedestrain in roadp.pedestrains:
+                if (pedestrain.latinModeOn and (not pedestrain.counted)):
+                    self.jaywalkers = self.jaywalkers + 1
+                    pedestrain.counted = True
+
                 self.draw_pedestrain(pedestrain, roadp)
 
     def draw_signalsp(self):
@@ -383,9 +390,13 @@ class Window:
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
+        text_rogue_cars = self.text_font.render(f'Rogue cars = {self.rogue_cars}', False, (0, 0, 0))
+        text_jaywalkers = self.text_font.render(f'Jaywalkers = {self.jaywalkers}', False, (0, 0, 0))
         
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
+        self.screen.blit(text_rogue_cars, (0, 25))
+        self.screen.blit(text_jaywalkers, (0, 50))
 
 
     def draw(self):
