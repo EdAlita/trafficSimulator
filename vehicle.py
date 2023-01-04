@@ -16,9 +16,10 @@ class Vehicle:
         self.l = 4
         self.s0 = 4
         self.T = 1
-        self.v_max = 16.6
-        self.a_max = 1.44
+        self.v_max = 8
+        self.a_max = 1
         self.b_max = 4.61
+        self.color = (255, 0, 0)
 
         self.path = []
         self.current_road_index = 0
@@ -55,7 +56,7 @@ class Vehicle:
         if self.stopped:
             if self.latinModeOn == False: 
                 self.a = -self.b_max*self.v/self.v_max
-        
+                
     def stop(self):
         self.stopped = True
 
@@ -66,10 +67,11 @@ class Vehicle:
         self.v_max = v
 
     def unslow(self):
-        self.v_max = self._v_max
+        self.v_max = self.v_max
 
     def latinmode(self):
-            self.latinModeOn=True
+        self.latinModeOn=True
+        self.color = (255,255,69)
     
     def normalmode(self):
-            self.latinmode=False
+        self.latinmode=False

@@ -16,8 +16,8 @@ class Window:
         
     def set_default_config(self):
         """Set default configuration"""
-        self.width = 1400
-        self.height = 900
+        self.width = 1000
+        self.height = 600
         self.bg_color = (250, 250, 250)
 
         self.fps = 60
@@ -232,6 +232,42 @@ class Window:
                 color
             )
 
+    def draw_roadsp(self):
+        for roadp in self.sim.roadsp:
+            # Draw road background
+            self.rotated_box(
+                roadp.start,
+                (roadp.length, 3.7),
+                cos=roadp.angle_cos,
+                sin=roadp.angle_sin,
+                color=(255, 255, 102),
+                centered=False
+            )
+            # Draw road lines
+            #self.rotated_box(
+            #     road.start,
+            #     (road.length, 0.25),
+            #     cos=road.angle_cos,
+            #     sin=road.angle_sin,
+            #     color=(0, 0, 0),
+            #     centered=False
+            # )
+
+            # Draw road arrow
+            if roadp.length > 5: 
+                for i in np.arange(-0.5*roadp.length, 0.5*roadp.length, 10):
+                    pos = (
+                        roadp.start[0] + (roadp.length/2 + i + 3) * roadp.angle_cos,
+                        roadp.start[1] + (roadp.length/2 + i + 3) * roadp.angle_sin
+                    )
+
+                    self.arrow(
+                        pos,
+                        (-1.25, 0.2),
+                        cos=roadp.angle_cos,
+                        sin=roadp.angle_sin
+                    )   
+            
     def draw_roads(self):
         for road in self.sim.roads:
             # Draw road background
@@ -267,10 +303,8 @@ class Window:
                         cos=road.angle_cos,
                         sin=road.angle_sin
                     )   
-            
 
 
-            # TODO: Draw road arrow
 
     def draw_vehicle(self, vehicle, road):
         l, h = vehicle.l,  2
@@ -303,6 +337,40 @@ class Window:
                         cos=road.angle_cos, sin=road.angle_sin,
                         color=color)
 
+
+
+    def draw_pedestrain(self, pedestrain, roadp):
+        l, h = pedestrain.l,  2
+        sin, cos = roadp.angle_sin, roadp.angle_cos
+
+        x = roadp.start[0] + cos * pedestrain.x 
+        y = roadp.start[1] + sin * pedestrain.x 
+
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=pedestrain.color)
+
+    def draw_pedestrains(self):
+        for roadp in self.sim.roadsp:
+            # Draw pedestrains
+            for pedestrain in roadp.pedestrains:
+                self.draw_pedestrain(pedestrain, roadp)
+
+    def draw_signalsp(self):
+        for signalp in self.sim.traffic_signalsp:
+            for i in range(len(signalp.roadsp)):
+                color = (0, 255, 0) if signalp.current_cycle[i] else (255, 0, 0)
+                for roadp in signalp.roadsp[i]:
+                    a = 0
+                    position = (
+                        (1-a)*roadp.end[0] + a*roadp.start[0],        
+                        (1-a)*roadp.end[1] + a*roadp.start[1]
+                    )
+                    self.rotated_box(
+                        position,
+                        (1, 3),
+                        cos=roadp.angle_cos, sin=roadp.angle_sin,
+                        color=color)
+
+
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
@@ -324,4 +392,8 @@ class Window:
         self.draw_roads()
         self.draw_vehicles()
         self.draw_signals()
+
+        self.draw_roadsp()
+        self.draw_pedestrains()
+        self.draw_signalsp()
 

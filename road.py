@@ -36,9 +36,10 @@ class Road:
 
             # Update first vehicle
             self.vehicles[0].update(None, dt)
-            if n%10==0:
+            #Create a latin car mode
+            if n%30==0:
                 self.vehicles[0].latinmode()
-                num = num + 1
+
             # Update other vehicles
             for i in range(1, n):
                 lead = self.vehicles[i-1]
