@@ -1,5 +1,6 @@
 from scipy.spatial import distance
 from collections import deque
+import random
 
 class RoadP:
     def __init__(self, start, end):
@@ -37,7 +38,7 @@ class RoadP:
             # Update first vehicle
             self.pedestrains[0].update(None, dt)
             #Create a latin car mode
-            if n%10==0:
+            if n%30==0:
                 self.pedestrains[0].latinmode()
 
             # Update other pedestrains

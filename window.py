@@ -320,6 +320,7 @@ class Window:
             # Draw vehicles
             for vehicle in road.vehicles:
                 self.draw_vehicle(vehicle, road)
+                
 
     def draw_signals(self):
         for signal in self.sim.traffic_signals:
