@@ -191,7 +191,7 @@ sim.create_gen({
 
 
 sim.create_genp({
-'pedestrain_rate' : 100,
+'pedestrain_rate' : 50,
 'pedestrains':[
     [3, {'path': [0, 8, 6]}],
     [3, {'path': [1, 9, 7]}],

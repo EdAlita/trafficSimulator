@@ -1,6 +1,7 @@
 import pygame
 from pygame import gfxdraw
 import numpy as np
+import platform
 
 class Window:
     def __init__(self, sim, config={}):
@@ -9,6 +10,8 @@ class Window:
 
         # Set default configurations
         self.set_default_config()
+
+        
 
         # Update configurations
         for attr, val in config.items():
@@ -27,12 +30,18 @@ class Window:
         self.mouse_last = (0, 0)
         self.mouse_down = False
 
+        self.rogue_cars = 0
+        self.jaywalkers = 0
+
 
     def loop(self, loop=None):
         """Shows a window visualizing the simulation and runs the loop function."""
         
         # Create a pygame window
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        if (platform.platform() == 'macOS-10.16-x86_64-i386-64bit'):
+            self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.flip()
 
         # Fixed fps
@@ -313,12 +322,15 @@ class Window:
         x = road.start[0] + cos * vehicle.x 
         y = road.start[1] + sin * vehicle.x 
 
-        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=vehicle.color)
 
     def draw_vehicles(self):
         for road in self.sim.roads:
             # Draw vehicles
             for vehicle in road.vehicles:
+                if vehicle.latinModeOn and not vehicle.counted:
+                    self.rogue_cars = self.rogue_cars+1
+                    vehicle.counted = True
                 self.draw_vehicle(vehicle, road)
                 
 
@@ -353,6 +365,10 @@ class Window:
         for roadp in self.sim.roadsp:
             # Draw pedestrains
             for pedestrain in roadp.pedestrains:
+                if (pedestrain.latinModeOn and (not pedestrain.counted)):
+                    self.jaywalkers = self.jaywalkers + 1
+                    pedestrain.counted = True
+
                 self.draw_pedestrain(pedestrain, roadp)
 
     def draw_signalsp(self):
@@ -375,9 +391,13 @@ class Window:
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
+        text_rogue_cars = self.text_font.render(f'Rogue cars = {self.rogue_cars}', False, (0, 0, 0))
+        text_jaywalkers = self.text_font.render(f'Jaywalkers = {self.jaywalkers}', False, (0, 0, 0))
         
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
+        self.screen.blit(text_rogue_cars, (0, 25))
+        self.screen.blit(text_jaywalkers, (0, 50))
 
 
     def draw(self):
