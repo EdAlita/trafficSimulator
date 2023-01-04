@@ -1,6 +1,7 @@
 import pygame
 from pygame import gfxdraw
 import numpy as np
+import platform
 
 class Window:
     def __init__(self, sim, config={}):
@@ -9,6 +10,8 @@ class Window:
 
         # Set default configurations
         self.set_default_config()
+
+        
 
         # Update configurations
         for attr, val in config.items():
@@ -27,12 +30,18 @@ class Window:
         self.mouse_last = (0, 0)
         self.mouse_down = False
 
+        self.rogue_cars = 0
+        self.jaywalkers = 0
+
 
     def loop(self, loop=None):
         """Shows a window visualizing the simulation and runs the loop function."""
         
         # Create a pygame window
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        if (platform.platform() == 'macOS-10.16-x86_64-i386-64bit'):
+            self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.flip()
 
         # Fixed fps
@@ -313,7 +322,7 @@ class Window:
         x = road.start[0] + cos * vehicle.x 
         y = road.start[1] + sin * vehicle.x 
 
-        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=vehicle.color)
 
     def draw_vehicles(self):
         for road in self.sim.roads:

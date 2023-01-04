@@ -19,7 +19,7 @@ class Vehicle:
         self.v_max = 8
         self.a_max = 1
         self.b_max = 4.61
-        self.color = (255, 0, 0)
+        self.color = (0, 191, 255)
 
         self.path = []
         self.current_road_index = 0
@@ -69,8 +69,18 @@ class Vehicle:
     def unslow(self):
         self.v_max = self.v_max
 
+    def set_color(self, color):
+        self.color = color
+    
+    def get_color(self):
+        return self.color
+
     def latinmode(self):
         self.latinModeOn=True
+        if self.latinModeOn:
+            self.set_color((255, 165, 0))
+        else:
+            self.set_color((0, 191, 255))
     
     def normalmode(self):
         self.latinmode=False
