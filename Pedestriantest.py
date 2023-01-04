@@ -1,6 +1,4 @@
-import numpy as np
 from simulation import Simulation
-from curve import turn_road
 from window import Window
 
 sim = Simulation()
@@ -107,48 +105,7 @@ SOUTH_STRAIGHTP = (SOUTH_RIGHTP, NORTH_LEFTP)
 EAST_STRAIGHTP = (EAST_RIGHTP, WEST_LEFTP)
 NORTH_STRAIGHTP = (NORTH_RIGHTP, SOUTH_LEFTP)
 
-WEST_RIGHT_TURN = turn_road(WEST_RIGHT, SOUTH_LEFT, TURN_RIGHT, n)
-WEST_LEFT_TURN = turn_road(WEST_RIGHT, NORTH_LEFT, TURN_LEFT, n)
-
-SOUTH_RIGHT_TURN = turn_road(SOUTH_RIGHT, EAST_LEFT, TURN_RIGHT, n)
-SOUTH_LEFT_TURN = turn_road(SOUTH_RIGHT, WEST_LEFT, TURN_LEFT, n)
-
-EAST_RIGHT_TURN = turn_road(EAST_RIGHT, NORTH_LEFT, TURN_RIGHT, n)
-EAST_LEFT_TURN = turn_road(EAST_RIGHT, SOUTH_LEFT, TURN_LEFT, n)
-
-NORTH_RIGHT_TURN = turn_road(NORTH_RIGHT, WEST_LEFT, TURN_RIGHT, n)
-NORTH_LEFT_TURN = turn_road(NORTH_RIGHT, EAST_LEFT, TURN_LEFT, n)
-
 sim.create_roads([
-    WEST_INBOUND,
-    SOUTH_INBOUND,
-    EAST_INBOUND,
-    NORTH_INBOUND,
-
-    WEST_OUTBOUND,
-    SOUTH_OUTBOUND,
-    EAST_OUTBOUND,
-    NORTH_OUTBOUND,
-
-    WEST_STRAIGHT,
-    SOUTH_STRAIGHT,
-    EAST_STRAIGHT,
-    NORTH_STRAIGHT,
-
-    *WEST_RIGHT_TURN,
-    *WEST_LEFT_TURN,
-
-    *SOUTH_RIGHT_TURN,
-    *SOUTH_LEFT_TURN,
-
-    *EAST_RIGHT_TURN,
-    *EAST_LEFT_TURN,
-
-    *NORTH_RIGHT_TURN,
-    *NORTH_LEFT_TURN
-])
-
-sim.create_roadsp([
     WEST_INBOUNDP,
     SOUTH_INBOUNDP,
     EAST_INBOUNDP,
@@ -165,34 +122,9 @@ sim.create_roadsp([
     NORTH_STRAIGHTP
 ])
 
-def road(a): return range(a, a+n)
-def roadp(ap): return range(ap, ap+n)
-
 sim.create_gen({
-'vehicle_rate': 100,
+'vehicles_rate' : 100,
 'vehicles':[
-    [3, {'path': [0, 8, 6]}],
-    [1, {'path': [0, *road(12), 5]}],
-    [1, {'path': [0, *road(12+n), 7]}],
-
-    [3, {'path': [1, 9, 7]}],
-    [1, {'path': [1, *road(12+2*n), 6]}],
-    [1, {'path': [1, *road(12+3*n), 4]}],
-
-
-    [3, {'path': [2, 10, 4]}],
-    [1, {'path': [2, *road(12+4*n), 7]}],
-    [1, {'path': [2, *road(12+5*n), 5]}],
-
-    [3, {'path': [3, 11, 5]}],
-    [1, {'path': [3, *road(12+6*n), 4]}],
-    [1, {'path': [3, *road(12+7*n), 6]}]
-]})
-
-
-sim.create_genp({
-'pedestrain_rate' : 100,
-'pedestrains':[
     [3, {'path': [0, 8, 6]}],
     [3, {'path': [1, 9, 7]}],
     [3, {'path': [2, 10, 4]}],
@@ -200,8 +132,6 @@ sim.create_genp({
 ]})
 
 sim.create_signal([[0, 2], [1, 3]])
-
-sim.create_signalp([[0, 2], [1, 3]])
 
 
 # Start simulation

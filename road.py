@@ -37,8 +37,9 @@ class Road:
             # Update first vehicle
             self.vehicles[0].update(None, dt)
             #Create a latin car mode
-            if n%30==0:
+            if n%10==0:
                 self.vehicles[0].latinmode()
+                self.vehicles[0].color = (0,0,255)
 
             # Update other vehicles
             for i in range(1, n):

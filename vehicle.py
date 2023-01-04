@@ -71,7 +71,6 @@ class Vehicle:
 
     def latinmode(self):
         self.latinModeOn=True
-        self.color = (255,255,69)
     
     def normalmode(self):
         self.latinmode=False
