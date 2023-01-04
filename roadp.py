@@ -37,11 +37,8 @@ class RoadP:
 
             # Update first vehicle
             self.pedestrains[0].update(None, dt)
-<<<<<<< HEAD
-            #Create a latin car mode
-=======
+
             #Create a latin pedestrain mode
->>>>>>> 4ea7c9b7780b94a8cb4e400a62c5c5018bc5273c
             if n%30==0:
                 self.pedestrains[0].latinmode()
 
